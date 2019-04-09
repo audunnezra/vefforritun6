@@ -17,13 +17,18 @@ class ParticipateInForum extends TestCase
         // given we have an authenticated user
         $user = factory('App\User')->create();
         $this->be($user);
+
         // and an existing thread
         $thread = factory('App\Thread')->create();
+
         // when the user adds a reply to the thread
         $reply = factory('App\Reply')->create();
-        $this->post('/threads/' . $thread->id . '/replies', $replies->toArray());
+        $this->post('/threads/' . $thread->id . '/replies', $reply->toArray());
+
         // then their reply should be visible on the page
-        $this->get($thread->path());
+        $this->get($thread->path())
+            ->assertSee($reply->body);
     }
 
 }
+ 
