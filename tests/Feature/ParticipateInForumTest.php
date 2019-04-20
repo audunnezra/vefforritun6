@@ -10,6 +10,14 @@ class ParticipateInForum extends TestCase
 {
     use RefreshDatabase;
 
+    /** test */
+    public function an_unauthenticated_user_may_not_participate_in_forum_threads(){
+        $this->expectException();
+
+        $this->post('/threads/1/replies', []);
+    }
+
+
     /** @test */
     public function an_authenticated_user_may_participate_in_forum_threads()
     {
@@ -22,8 +30,8 @@ class ParticipateInForum extends TestCase
         $thread = factory('App\Thread')->create();
 
         // when the user adds a reply to the thread
-        $reply = factory('App\Reply')->create();
-        $this->post('/threads/' . $thread->id . '/replies', $reply->toArray());
+        $reply = factory('App\Reply')->make();
+        $this->post($thread->path() . '/replies', $reply->toArray());
 
         // then their reply should be visible on the page
         $this->get($thread->path())
@@ -31,4 +39,3 @@ class ParticipateInForum extends TestCase
     }
 
 }
- 
