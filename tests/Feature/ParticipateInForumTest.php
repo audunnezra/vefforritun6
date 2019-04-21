@@ -10,9 +10,9 @@ class ParticipateInForum extends TestCase
 {
     use RefreshDatabase;
 
-    /** test */
+    /** @test */
     public function an_unauthenticated_user_may_not_participate_in_forum_threads(){
-        $this->expectException();
+        $this->expectException('Illuminate\Auth\AuthenticationException');
 
         $this->post('/threads/1/replies', []);
     }
